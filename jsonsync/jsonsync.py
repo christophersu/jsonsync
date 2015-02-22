@@ -1,13 +1,19 @@
 import json
 
 # Syncs a JSON file with a Python dictionary
+#
+# Syncs by top-level keys. Each top-level key
+# should have a dictionary value. The value
+# of each second-level key will be updated
+# to reflect that of the current data.
 def sync(json_filename, data):
     json_file = open(json_filename)
     json_data = json.load(json_file)
     json_file.close()
 
     for key in data:
-        json_data[key] = data[key]
+        for k, v in data[key].iteritems():
+            json_data[key][k] = v
 
     with open(json_filename, 'w') as outfile:
         json.dump(json_data, outfile)
